@@ -1,250 +1,341 @@
-# PDF Translator CLI
+# Translation-Gummy-PDF - GUI 版本使用說明
 
-一個強大的PDF翻譯命令行工具，可以將PDF文件翻譯成多種語言，同時完整保留原始的圖片、排版和格式。
+## 🎯 功能特色
 
-## 功能特點
+- ✅ **圖形化介面**：直覺的 Windows GUI 操作介面
+- ✅ **檔案選擇**：支援瀏覽器選擇輸入/輸出檔案
+- ✅ **雙翻譯引擎**：可選擇 Google Translate 或 Ollama LLM
+- ✅ **模型自動偵測**：自動偵測 Ollama 已安裝模型並提供選擇
+- ✅ **即時進度**：顯示翻譯進度條和詳細狀態
+- ✅ **多語言支援**：支援繁中、簡中、英文、日文、韓文等
+- ✅ **頁面選擇**：可指定要翻譯的頁面範圍
+- ✅ **保留排版**：完整保留原文的圖片和版面配置
+- ✅ **背景處理**：使用多執行緒，介面不會凍結
+- ✅ **可中斷**：隨時可以停止翻譯作業
 
-✅ **保留原始格式** - 完整保留PDF的所有圖片、排版和視覺元素  
-✅ **多語言支持** - 支持Google Translate的所有語言  
-✅ **雙翻譯引擎** - 可選擇 Google Translate 或 Ollama LLM (Gemma2:9b)  
-✅ **靈活的頁面選擇** - 可以翻譯整個文檔或指定頁面範圍  
-✅ **進度追蹤** - 提供詳細的進度信息（可選）  
-✅ **批量處理** - 適合處理大型PDF文檔
+## 📦 安裝需求
 
-## 系統需求
+### 1. 安裝 Python
+- **需要 Python 3.10, 3.11, 或 3.12**
+- ⚠️ **不支援 Python 3.13+**（相容性問題）
+- 下載網址：https://www.python.org/downloads/
 
-- **Python 版本**: 3.10, 3.11, 或 3.12
-  - ⚠️ **不支援 Python 3.13+**（因為 `googletrans==3.1.0a0` 依賴的 `httpx` 需要已被移除的 `cgi` 模組）
+### 2. 安裝必要套件
+開啟命令提示字元或 PowerShell，執行：
 
-- **翻譯引擎** (擇一):
-  - **Google Translate** (預設): 需要網路連線
-  - **Ollama LLM**: 需要本機安裝並執行 Ollama，並下載 Gemma2:9b 模型
-    ```bash
-    # 安裝 Ollama: https://ollama.ai
-    # 下載模型
-    ollama pull gemma2:9b
-    # 啟動 Ollama
-    ollama serve
-    ```
-
-## 安裝依賴
-
-### 方法 1：使用 uv（推薦）
-
-```bash
-# 安裝 uv（如果尚未安裝）
+#### 方法 1：使用 uv（推薦）
+```powershell
+# 安裝 uv
 pip install uv
 
 # 同步專案依賴
 uv sync
 ```
 
-### 方法 2：使用 pip
-
-```bash
+#### 方法 2：使用 pip
+```powershell
 pip install PyMuPDF googletrans==3.1.0a0 requests
 ```
 
-## 使用方法
-
-### 基本用法
-
-#### 使用 uv（推薦）
-```bash
-uv run pdf_translator.py input.pdf output.pdf
+### 3. (選用) 安裝 Ollama
+如果要使用本機 LLM 翻譯：
+```powershell
+# 1. 下載並安裝 Ollama: https://ollama.ai
+# 2. 下載模型
+ollama pull gemma2:9b
+# 3. 啟動 Ollama (在另一個終端視窗)
+ollama serve
 ```
 
-#### 使用 python
-```bash
-python pdf_translator.py input.pdf output.pdf
+## 🚀 啟動方式
+
+### 方法 1：使用批次檔（推薦）
+直接雙擊 `run_gui.bat` 即可啟動程式
+
+### 方法 2：使用 uv（推薦）
+```powershell
+uv run pdf_translator_gui.py
 ```
 
-### 進階用法
-
-#### 1. 翻譯為簡體中文
-```bash
-# 使用 uv
-uv run pdf_translator.py input.pdf output.pdf --lang zh-CN
-
-# 或使用 python
-python pdf_translator.py input.pdf output.pdf --lang zh-CN
+### 方法 3：使用 python
+```powershell
+python pdf_translator_gui.py
 ```
 
-#### 2. 翻譯為其他語言
-```bash
-# 日文
-uv run pdf_translator.py input.pdf output.pdf --lang ja
+## 📖 使用步驟
 
-# 韓文
-uv run pdf_translator.py input.pdf output.pdf --lang ko
+### 步驟 1：選擇輸入檔案
+1. 點擊「1. 選擇輸入檔案」區域的「瀏覽...」按鈕
+2. 選擇要翻譯的 PDF 檔案
+3. 系統會自動建議輸出檔名（原檔名_translated.pdf）
 
-# 法文
-uv run pdf_translator.py input.pdf output.pdf --lang fr
+### 步驟 2：選擇輸出位置（可選）
+1. 如果要修改輸出位置，點擊「2. 選擇輸出位置」的「瀏覽...」按鈕
+2. 指定輸出檔案的位置和名稱
+
+### 步驟 3：設定翻譯選項
+1. **目標語言**：從下拉選單選擇
+   - zh-TW (繁體中文) - 預設
+   - zh-CN (簡體中文)
+   - en (English)
+   - ja (日本語)
+   - ko (한국어)
+
+2. **翻譯引擎**：選擇翻譯方式
+   - **google (Google Translate)** - 預設，需要網路連線
+   - **ollama (Ollama LLM)** - 本機 LLM，需先啟動 Ollama
+   
+3. **Ollama 模型選擇**（當選擇 Ollama 引擎時顯示）：
+   - 程式會自動偵測本機已安裝的 Ollama 模型
+   - 從下拉選單中選擇要使用的模型
+   - 點擊「重新整理」可更新模型列表
+   - 建議使用 gemma2:9b 或 gemma 系列模型
+
+4. **頁面範圍**（選填）：
+   - 留空 = 翻譯全部頁面
+   - 單一頁面：`5`
+   - 連續頁面：`1-10`
+   - 多個範圍：`1-10,15,20-25`
+
+### 步驟 4：開始翻譯
+1. 點擊「開始翻譯」按鈕
+2. 觀看進度條和詳細狀態
+3. 如需中斷，可點擊「停止」按鈕
+4. 完成後會顯示成功訊息
+
+## 🖼️ 介面說明
+
+```
+┌─────────────────────────────────────────┐
+│         📄 PDF 翻譯工具                  │
+├─────────────────────────────────────────┤
+│ 1. 選擇輸入檔案                          │
+│   [檔案路徑________________] [瀏覽...]   │
+├─────────────────────────────────────────┤
+│ 2. 選擇輸出位置                          │
+│   [檔案路徑________________] [瀏覽...]   │
+├─────────────────────────────────────────┤
+│ 3. 翻譯設定                              │
+│   目標語言：[zh-TW (繁體中文) ▼]         │
+│   頁面範圍：[___________________]        │
+├─────────────────────────────────────────┤
+│ 4. 翻譯進度                              │
+│   狀態：等待開始...                      │
+│   [████████████████        ] 75%        │
+│   ┌─────────────────────────────────┐  │
+│   │ ✓ 翻譯引擎已就緒              │  │
+│   │ ✓ 已選擇輸入檔案...           │  │
+│   │ ✓ 正在翻譯 (150/200)...       │  │
+│   └─────────────────────────────────┘  │
+├─────────────────────────────────────────┤
+│  [   開始翻譯   ]  [   停止   ]         │
+└─────────────────────────────────────────┘
 ```
 
-#### 3. 只翻譯指定頁面
-```bash
-# 翻譯第1-10頁
-uv run pdf_translator.py input.pdf output.pdf --pages "1-10"
+## ⚙️ 進階功能
 
-# 翻譯多個不連續的頁面範圍
-uv run pdf_translator.py input.pdf output.pdf --pages "1-10,15,20-25,50-60"
+### 頁面範圍語法
+
+| 輸入格式 | 說明 | 範例 |
+|---------|------|------|
+| `5` | 單一頁面 | 只翻譯第 5 頁 |
+| `1-10` | 連續範圍 | 翻譯第 1 到 10 頁 |
+| `1-10,15` | 混合格式 | 翻譯第 1-10 頁和第 15 頁 |
+| `1-5,10,15-20` | 多個範圍 | 翻譯多個不連續範圍 |
+| （空白） | 全部頁面 | 翻譯整份文件 |
+
+### 支援的語言代碼
+
+| 語言 | 代碼 | 說明 |
+|------|------|------|
+| 繁體中文 | zh-TW | Traditional Chinese |
+| 簡體中文 | zh-CN | Simplified Chinese |
+| 英文 | en | English |
+| 日文 | ja | Japanese |
+| 韓文 | ko | Korean |
+| 法文 | fr | French |
+| 德文 | de | German |
+| 西班牙文 | es | Spanish |
+
+## 🔧 疑難排解
+
+### 問題 1：程式無法啟動
+**解決方法：**
+1. 確認已安裝 Python 3.7+
+2. 確認已安裝必要套件：
+   ```powershell
+   pip install PyMuPDF googletrans==3.1.0a0
+   ```
+
+### 問題 2：翻譯速度很慢
+**原因：**
+- 為避免 Google Translate API 限制，每段文字間隔 0.5 秒
+- 大型 PDF 可能需要較長時間
+
+**建議：**
+- 使用「頁面範圍」功能分批翻譯
+- 耐心等待，不要中斷程式
+
+### 問題 3：某些文字沒有翻譯
+**可能原因：**
+1. 該文字是圖片中的文字（OCR 問題）
+2. 文字太短（少於 2 個字元會被跳過）
+3. 翻譯 API 暫時失敗
+
+**解決方法：**
+- 檢查原始 PDF 的文字是否可選取
+- 嘗試重新翻譯該頁面
+
+### 問題 4：中文顯示為方塊或亂碼
+**原因：**
+- 字型嵌入問題
+
+**解決方法：**
+- 程式使用 PyMuPDF 內建的 CJK 字型（china-ss, china-s, cjk）
+- 如果問題持續，請更新 PyMuPDF：
+  ```powershell
+  pip install --upgrade PyMuPDF
+  ```
+
+### 問題 5：記憶體不足
+**原因：**
+- PDF 檔案太大
+
+**解決方法：**
+- 使用「頁面範圍」功能分批處理
+- 例如：先翻譯 1-50 頁，再翻譯 51-100 頁
+
+## 💡 使用技巧
+
+### 技巧 1：快速預覽
+先翻譯前幾頁預覽效果：
+- 設定頁面範圍為 `1-3`
+- 檢查翻譯品質和版面配置
+- 確認無誤後再翻譯全部
+
+### 技巧 2：分批處理大檔案
+```
+第 1 次：頁面範圍 = 1-50   → output_part1.pdf
+第 2 次：頁面範圍 = 51-100 → output_part2.pdf
+...
 ```
 
-#### 4. 啟用詳細輸出
-```bash
-uv run pdf_translator.py input.pdf output.pdf -v
-# 或
-uv run pdf_translator.py input.pdf output.pdf --verbose
+### 技巧 3：保留原檔案
+- 輸出檔名建議加上語言標記
+- 例如：`document_zh-TW.pdf`、`document_en.pdf`
+
+### 技巧 4：觀察詳細資訊
+- 展開「翻譯進度」區域的訊息視窗
+- 可以看到每個步驟的詳細進度
+- 有助於了解處理狀況
+
+## 📊 效能參考
+
+| PDF 大小 | 頁數 | 文字區塊 | 預估時間 |
+|---------|------|---------|---------|
+| 1-2 MB | 10 頁 | ~200 區塊 | 2-3 分鐘 |
+| 5-10 MB | 50 頁 | ~1000 區塊 | 10-15 分鐘 |
+| 10-20 MB | 100 頁 | ~2000 區塊 | 20-30 分鐘 |
+| 20+ MB | 200+ 頁 | ~5000 區塊 | 1+ 小時 |
+
+*實際時間會因網路速度和電腦效能而異*
+
+## 🆚 CLI 版本 vs GUI 版本
+
+| 功能 | CLI 版本 | GUI 版本 |
+|------|---------|---------|
+| 操作方式 | 命令列 | 圖形介面 |
+| 進度顯示 | 文字 | 進度條 + 詳細資訊 |
+| 檔案選擇 | 手動輸入路徑 | 瀏覽器選擇 |
+| 背景執行 | 否 | 是 |
+| 可中斷 | Ctrl+C | 停止按鈕 |
+| 適合對象 | 進階使用者 | 一般使用者 |
+
+## 📝 檔案說明
+
+- `pdf_translator_gui.py` - GUI 主程式
+- `pdf_translator_gui.spec` - PyInstaller 編譯配置檔
+- `run_gui.bat` - Windows 快速啟動檔
+- `build_exe.bat` - EXE 編譯腳本
+- `dist\PDF翻譯工具.exe` - 編譯後的獨立執行檔（約 31.3 MB）
+- `README_GUI.md` - 本使用說明文件
+- `EXE_使用說明.md` - EXE 版本使用說明
+
+## 🔨 編譯成 EXE
+
+### 使用 PyInstaller 編譯
+
+如果你想要將 GUI 版本編譯成獨立的 EXE 檔案：
+
+#### 方法 1：使用編譯腳本（推薦）
+```powershell
+# 直接執行編譯腳本
+.\build_exe.bat
 ```
 
-#### 5. 使用 Ollama 翻譯（本機 LLM）
-```bash
-# 確保 Ollama 已啟動：ollama serve
-# 並且已下載模型：ollama pull gemma2:9b
+#### 方法 2：手動編譯
+```powershell
+# 1. 安裝 PyInstaller
+uv pip install pyinstaller
 
-uv run pdf_translator.py input.pdf output.pdf --engine ollama
+# 2. 編譯 GUI 版本
+uv run pyinstaller pdf_translator_gui.spec --clean
 
-# 結合其他選項
-uv run pdf_translator.py input.pdf output.pdf --engine ollama --lang zh-CN -v
+# 3. 編譯完成後，EXE 位於 dist 目錄
+.\dist\PDF翻譯工具.exe
 ```
 
-## 命令行參數
+### 編譯說明
+- 編譯時間約 1-2 分鐘
+- 生成的 EXE 約 31.3 MB
+- 包含所有必要的 Python 套件和依賴
+- 可在任何 Windows 電腦上執行，無需安裝 Python
+- 支援雙翻譯引擎（Google Translate + Ollama）
+- 詳細使用說明請參考 `EXE_使用說明.md`
 
-| 參數 | 簡寫 | 說明 | 預設值 |
-|------|------|------|--------|
-| `input` | - | 輸入PDF文件路徑 | 必需 |
-| `output` | - | 輸出PDF文件路徑 | 必需 |
-| `--lang` | `-l` | 目標語言代碼 | zh-TW |
-| `--pages` | `-p` | 要翻譯的頁面範圍 | 全部頁面 |
-| `--engine` | `-e` | 翻譯引擎：`google` 或 `ollama` | google |
-| `--verbose` | `-v` | 顯示詳細輸出 | 關閉 |
-| `--version` | - | 顯示版本信息 | - |
-| `--help` | `-h` | 顯示幫助信息 | - |
+## 🔗 相關文件
 
-## 支持的語言代碼
+- CLI 版本使用說明：`README.md`
+- 專案技術摘要：`PROJECT_SUMMARY.md`
+- CLI 範例腳本：`examples.bat`
 
-常用語言代碼：
-- `zh-TW` - 繁體中文
-- `zh-CN` - 簡體中文
-- `en` - 英文
-- `ja` - 日文
-- `ko` - 韓文
-- `fr` - 法文
-- `de` - 德文
-- `es` - 西班牙文
-- `pt` - 葡萄牙文
-- `ru` - 俄文
+## 📞 常見問題
 
-更多語言代碼請參考 [Google Translate 語言列表](https://cloud.google.com/translate/docs/languages)
+**Q: 可以同時翻譯多個檔案嗎？**  
+A: 目前不支援批次處理，需要一個一個翻譯。
 
-## 使用範例
+**Q: 翻譯後檔案變大了？**  
+A: 正常現象，因為嵌入了中文字型資料。
 
-### 範例 1：翻譯英文電子書為繁體中文
-```bash
-# 使用 uv
-uv run pdf_translator.py "The_Pathless_Path.pdf" "The_Pathless_Path(zh-TW).pdf"
+**Q: 可以翻譯掃描的 PDF 嗎？**  
+A: 不行，需要是可選取文字的 PDF。掃描文件需要先進行 OCR 處理。
 
-# 或使用 python
-python pdf_translator.py "The_Pathless_Path.pdf" "The_Pathless_Path(zh-TW).pdf"
-```
+**Q: 支援其他翻譯引擎嗎？**  
+A: 支援！目前支援兩種翻譯引擎：
+- Google Translate（線上，需要網路）
+- Ollama LLM（本機，可離線使用）
 
-### 範例 2：翻譯學術論文的前20頁
-```bash
-uv run pdf_translator.py "research_paper.pdf" "research_paper_zh.pdf" --pages "1-20" -v
-```
+**Q: 程式會連網嗎？**  
+A: 看你選擇的翻譯引擎：
+- Google Translate 引擎：需要連網
+- Ollama 引擎：完全離線運作
 
-### 範例 3：翻譯特定章節
-```bash
-# 假設第3-5章在第30-80頁
-uv run pdf_translator.py "textbook.pdf" "textbook_chapter3-5.pdf" --pages "30-80"
-```
-
-## 處理時間估算
-
-翻譯速度取決於：
-- PDF的頁數和文字密度
-- 網路連線速度
-- Google Translate API 的回應時間
-
-大致估算：
-- 小型PDF（50頁）：約10-15分鐘
-- 中型PDF（100頁）：約20-30分鐘
-- 大型PDF（200頁）：約40-60分鐘
-
-## 注意事項
-
-1. **網路連線**：需要穩定的網路連線以訪問Google Translate API
-2. **API限制**：Google Translate可能有使用限制，大量翻譯時請注意
-3. **字體顯示**：使用內建CJK字體，中文顯示效果良好
-4. **文件大小**：翻譯後的PDF文件可能會增大（約2-3倍）
-5. **備份原檔**：建議先備份原始PDF文件
-
-## 測試
-
-執行測試套件：
-```bash
-python test_cli.py
-```
-
-## 技術細節
-
-- **PDF處理**：使用 PyMuPDF (fitz) 進行PDF讀取和修改
-- **翻譯引擎**：使用 Google Translate API (googletrans)
-- **字體支持**：使用內建CJK字體（china-ss, china-s, cjk）
-- **文字處理**：通過redact覆蓋原文，再插入翻譯文字
-
-## 限制
-
-- 某些特殊PDF格式可能無法完美處理
-- 圖片中的文字無法翻譯（僅翻譯可提取的文字）
-- 複雜的排版可能需要手動調整
-
-## 版本歷史
-
-### v1.0 (2024-11-26)
-- 初始版本發布
-- 支持多語言翻譯
-- 支持頁面範圍選擇
-- 完整保留圖片和排版
-
-## 授權
-
-MIT License
-
-## 貢獻
-
-歡迎提交Issue和Pull Request！
-
-## 常見問題
-
-**Q: 為什麼翻譯後的PDF變大了？**  
-A: 因為嵌入了中文字體數據，這是確保中文正確顯示所必需的。
-
-**Q: 可以離線使用嗎？**  
-A: 可以！使用 Ollama 引擎可以完全離線翻譯：
-```bash
-uv run python pdf_translator.py input.pdf output.pdf -l zh-TW -e ollama
-```
-
-**Q: 支持掃描版PDF嗎？**  
-A: 不支持。本工具只能翻譯可提取的文字，掃描版PDF需先進行OCR處理。
-
-**Q: 翻譯質量如何？**  
+**Q: 如何使用 Ollama 翻譯？**  
 A: 
-- Google Translate：快速、穩定，適合一般翻譯
-- Ollama LLM：更自然、可自訂，但速度較慢
+1. 下載並安裝 Ollama (https://ollama.ai)
+2. 下載模型：`ollama pull gemma2:9b`
+3. 在程式中選擇「Ollama LLM」引擎
+4. 從下拉選單選擇已安裝的模型
 
-**Q: 有 GUI 圖形介面版本嗎？**  
-A: 有！請參考 `README_GUI.md` 或執行 `run_gui.bat`
+**Q: 可以編譯成 EXE 嗎？**  
+A: 可以！執行 `build_exe.bat` 或參考本文件的「編譯成 EXE」章節。
 
-**Q: 可以編譯成獨立的 EXE 檔案嗎？**  
-A: 可以！執行 `build_exe.bat` 即可編譯 GUI 版本成 EXE，詳見 `EXE_使用說明.md`
+## 📄 授權資訊
 
-## 相關文件
+本工具僅供學習和個人使用。請遵守 Google Translate 的使用條款。
 
-- **GUI 版本使用說明**: `README_GUI.md`
-- **EXE 版本使用說明**: `EXE_使用說明.md`
-- **翻譯引擎比較**: `TRANSLATION_ENGINES.md`
-- **專案完整指南**: `FULL_PROJECT_GUIDE.md`
-- **專案摘要**: `PROJECT_SUMMARY.md`
+---
+
+**版本：** 1.0  
+**更新日期：** 2024-11-26  
+**開發環境：** Windows 10/11, Python 3.10-3.12
